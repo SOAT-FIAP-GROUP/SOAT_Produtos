@@ -4,6 +4,7 @@ import br.com.ms_produtos.entity.Categoria;
 import br.com.ms_produtos.entity.Produto;
 
 import java.util.List;
+import java.util.Set;
 
 public interface IProdutoUseCase {
 
@@ -18,4 +19,6 @@ public interface IProdutoUseCase {
     List<Produto> buscarProdutosPorCategoria(Long id);
 
     Categoria buscarCategoria(Long id);
+
+    Set<Produto> buscarListaProdutos(Set<Long> listCodigoProdutos);
 }

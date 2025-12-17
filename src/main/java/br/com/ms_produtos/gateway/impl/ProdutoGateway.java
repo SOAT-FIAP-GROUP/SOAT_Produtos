@@ -8,6 +8,7 @@ import br.com.ms_produtos.gateway.persistence.jpa.ProdutoRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ProdutoGateway implements IProdutoGateway {
@@ -39,5 +40,11 @@ public class ProdutoGateway implements IProdutoGateway {
     public Produto save(Produto entity) {
         return produtoRepository.save(ProdutoMapper.toEntityPersistence(entity))
                 .toModel();
+    }
+
+    @Override
+    public Set<Produto> findAllById(Set<Long> listCodigoProdutos) {
+        return produtoRepository.findAllById(listCodigoProdutos).stream()
+                .map(ProdutoEntity::toModel).collect(Collectors.toSet());
     }
 }

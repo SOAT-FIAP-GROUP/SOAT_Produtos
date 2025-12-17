@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/produtos")
@@ -26,6 +27,13 @@ public class ProdutoAPIController {
     @GetMapping("/buscar/produto/{codigoProduto}")
     public ResponseEntity<ProdutoResponse> buscarPorCodigoProduto(@PathVariable Long codigoProduto) throws Exception {
         var response = produtoController.buscarProduto(codigoProduto);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @Operation(summary = "Buscar uma lista de produtos por codigo", description = "Retorna uma lista de produtos")
+    @GetMapping("/buscar/lista")
+    public ResponseEntity<Set<ProdutoResponse>> buscarListaProdutos(@RequestParam Set<Long> listCodigoProdutos) throws Exception {
+        var response = produtoController.buscarListaProdutos(listCodigoProdutos);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
