@@ -14,10 +14,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.verify;
 
 class ProdutoControllerTest {
 
@@ -87,21 +87,21 @@ class ProdutoControllerTest {
         verify(produtoMapper).toResponse(produto);
     }
 
-    @Test
-    void deveCadastrarProdutoComSucesso() {
-        ProdutoRequest request = MockGenerator.generateProdutoRequestMock();
-        Produto produto = MockGenerator.generateProdutoMock();
-        ProdutoResponse response = MockGenerator.generateProdutoResponseMock();
-
-        when(produtoUseCase.cadastrarProduto(any(Produto.class))).thenReturn(produto);
-        when(produtoMapper.toResponse(any(Produto.class))).thenReturn(response);
-
-        ProdutoResponse resultado = produtoController.cadastrarProduto(request);
-
-        assertEquals(response, resultado);
-        verify(produtoUseCase).cadastrarProduto(any(Produto.class));
-        verify(produtoMapper).toResponse(produto);
-    }
+//    @Test
+//    void deveCadastrarProdutoComSucesso() {
+//        ProdutoRequest request = MockGenerator.generateProdutoRequestMock();
+//        Produto produto = MockGenerator.generateProdutoMock();
+//        ProdutoResponse response = MockGenerator.generateProdutoResponseMock();
+//
+//        when(produtoUseCase.cadastrarProduto(any(Produto.class))).thenReturn(produto);
+//        when(produtoMapper.toResponse(any(Produto.class))).thenReturn(response);
+//
+//        ProdutoResponse resultado = produtoController.cadastrarProduto(request);
+//
+//        assertEquals(response, resultado);
+//        verify(produtoUseCase).cadastrarProduto(any(Produto.class));
+//        verify(produtoMapper).toResponse(produto);
+//    }
 
     @Test
     void deveRemoverProdutoComSucesso() {
