@@ -8,6 +8,7 @@ import br.com.ms_produtos.controller.mapper.dto.response.ProdutoResponse;
 import br.com.ms_produtos.usecase.IProdutoUseCase;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ProdutoController {
@@ -48,5 +49,11 @@ public class ProdutoController {
     public ProdutoResponse atualizarProduto(ProdutoRequest produto, Long id) {
         return produtoMapper.toResponse(
                 produtoUseCase.atualizarProduto(id, ProdutoMapper.toEntity(produto)));
+    }
+
+    public Set<ProdutoResponse> buscarListaProdutos(Set<Long> listCodigoProdutos) {
+        return produtoUseCase.buscarListaProdutos(listCodigoProdutos)
+                .stream().map(produtoMapper::toResponse)
+                .collect(Collectors.toSet());
     }
 }

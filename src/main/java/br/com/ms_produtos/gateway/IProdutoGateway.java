@@ -4,6 +4,7 @@ import br.com.ms_produtos.entity.Produto;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface IProdutoGateway {
 
@@ -14,5 +15,7 @@ public interface IProdutoGateway {
     void removerProduto(Produto entity);
 
     Produto save(Produto entity);
+
+    Set<Produto> findAllById(Set<Long> listCodigoProdutos);
 
 }

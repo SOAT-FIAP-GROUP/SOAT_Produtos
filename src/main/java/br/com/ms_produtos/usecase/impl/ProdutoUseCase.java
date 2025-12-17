@@ -8,6 +8,7 @@ import br.com.ms_produtos.gateway.IProdutoGateway;
 import br.com.ms_produtos.usecase.IProdutoUseCase;
 
 import java.util.List;
+import java.util.Set;
 
 public class ProdutoUseCase implements IProdutoUseCase {
 
@@ -49,5 +50,10 @@ public class ProdutoUseCase implements IProdutoUseCase {
     @Override
     public Categoria buscarCategoria(Long id) {
         return categoriaGateway.findById(id).orElseThrow(() -> new EntityNotFoundException(Categoria.class, id));
+    }
+
+    @Override
+    public Set<Produto> buscarListaProdutos(Set<Long> listCodigoProdutos) {
+        return produtoGateway.findAllById(listCodigoProdutos);
     }
 }
