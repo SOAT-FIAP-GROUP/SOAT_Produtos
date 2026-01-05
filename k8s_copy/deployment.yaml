@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: produto-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: produto-app
+  template:
+    metadata:
+      labels:
+        app: produto-app
+    spec:
+      containers:
+      - name: produto-container
+        image: joseaugustodossantos/produto-app:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+
+        env:
+        - name: SPRING_DATASOURCE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: produto-config
+              key: spring.datasource.url
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: produto-config
+              key: spring.datasource.username
+        - name: SPRING_PROFILES_ACTIVE
+          valueFrom:
+            configMapKeyRef:
+              name: produto-config
+              key: spring.profiles.active
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: produto-secret
+              key: spring.datasource.password
+
+        resources:
+          requests:
+            cpu: "200m"
+            memory: 300Mi
+          limits:
+            cpu: "500m"
+            memory: 600Mi
+
+        startupProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 40
+          periodSeconds: 5
+          failureThreshold: 30
+          timeoutSeconds: 5
+
+        readinessProbe:
+          httpGet:
+            path: /actuator/health/readiness
+            port: 8080
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+
+        livenessProbe:
+          httpGet:
+            path: /actuator/health/liveness
+            port: 8080
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
