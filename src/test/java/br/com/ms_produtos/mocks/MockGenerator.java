@@ -25,6 +25,16 @@ public class MockGenerator {
         return produto;
     }
 
+    public static Produto generateProdutoMock2() {
+        Produto produto = new Produto(2L,
+                "batata recheada",
+                "batata recheada e é isso",
+                generateCategoriaMock(),
+                BigDecimal.valueOf(9.89D),
+                Time.valueOf("0:10:00"));
+        return produto;
+    }
+
     public static Categoria generateCategoriaMock() {
         Categoria categoria = new Categoria(ID, "LANCHE");
         return categoria;

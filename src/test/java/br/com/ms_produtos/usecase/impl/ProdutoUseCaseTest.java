@@ -11,10 +11,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -32,6 +31,22 @@ class ProdutoUseCaseTest {
         produtoGateway = mock(IProdutoGateway.class);
         categoriaGateway = mock(ICategoriaGateway.class);
         produtoUserCase = new ProdutoUseCase(produtoGateway, categoriaGateway);
+    }
+
+    @Test
+    void devebuscarListaProdutosQuandoIdExistir() {
+        Produto produto1 = MockGenerator.generateProdutoMock();
+        Produto produto2 = MockGenerator.generateProdutoMock2();
+        Set<Produto> produtosMock = Set.of(produto1, produto2);
+        Set<Long> produtosIdMock = Set.of(produto1.id(), produto2.id());
+
+
+        when(produtoGateway.findAllById(anySet())).thenReturn(produtosMock);
+
+        Set<Produto> resultado = produtoUserCase.buscarListaProdutos(produtosIdMock);
+
+        assertNotNull(resultado);
+        verify(produtoGateway).findAllById(produtosIdMock);
     }
 
     @Test

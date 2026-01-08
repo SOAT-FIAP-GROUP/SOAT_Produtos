@@ -13,9 +13,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
@@ -37,6 +37,41 @@ class ProdutoControllerTest {
         produtoController = new ProdutoController(
                 produtoUseCase, produtoMapper, categoriaMapper
         );
+    }
+
+    @Test
+    void devebuscarListaProdutosComSucesso() {
+        Produto produto1 = MockGenerator.generateProdutoMock();
+        Produto produto2 = MockGenerator.generateProdutoMock2();
+        Set<Long> listCodigoProdutos = Set.of(produto1.id(), produto2.id());
+
+        Set<Produto> produtosMock = Set.of(
+                produto1,
+                produto2
+        );
+        when(produtoUseCase.buscarListaProdutos(listCodigoProdutos)).thenReturn(produtosMock);
+
+        for (Produto p : produtosMock) {
+            when(produtoMapper.toResponse(p)).thenReturn(
+                    new ProdutoResponse(
+                            p.id(),
+                            p.nome(),
+                            p.descricao(),
+                            new CategoriaResponse(p.categoria().id(), p.categoria().nome()),
+                            p.preco(),
+                            p.tempopreparo()
+                    )
+            );
+        }
+
+        Set<ProdutoResponse> resultado = produtoController.buscarListaProdutos(listCodigoProdutos);
+
+        assertNotNull(resultado);
+        assertEquals(2, resultado.size());
+
+        verify(produtoUseCase, times(1)).buscarListaProdutos(listCodigoProdutos);
+        verify(produtoMapper, times(1)).toResponse(produto1);
+        verify(produtoMapper, times(1)).toResponse(produto2);
     }
 
     @Test
@@ -86,22 +121,6 @@ class ProdutoControllerTest {
         verify(produtoUseCase).buscarProdutosPorCategoria(anyLong());
         verify(produtoMapper).toResponse(produto);
     }
-
-//    @Test
-//    void deveCadastrarProdutoComSucesso() {
-//        ProdutoRequest request = MockGenerator.generateProdutoRequestMock();
-//        Produto produto = MockGenerator.generateProdutoMock();
-//        ProdutoResponse response = MockGenerator.generateProdutoResponseMock();
-//
-//        when(produtoUseCase.cadastrarProduto(any(Produto.class))).thenReturn(produto);
-//        when(produtoMapper.toResponse(any(Produto.class))).thenReturn(response);
-//
-//        ProdutoResponse resultado = produtoController.cadastrarProduto(request);
-//
-//        assertEquals(response, resultado);
-//        verify(produtoUseCase).cadastrarProduto(any(Produto.class));
-//        verify(produtoMapper).toResponse(produto);
-//    }
 
     @Test
     void deveRemoverProdutoComSucesso() {
