@@ -29,7 +29,6 @@ jobs:
           DOCKER_IMAGE="${{ secrets.DOCKER_USERNAME }}/produto-app:latest"
           echo "DOCKER_IMAGE=$DOCKER_IMAGE" >> $GITHUB_ENV
 
-
       - name: Render Deployment
         run: envsubst < k8s/deployment.yaml > k8s/deployment_rendered.yaml
 
