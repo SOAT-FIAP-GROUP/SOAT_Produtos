@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/produtos")
+@RequestMapping("/produtos")
 public class ProdutoAPIController {
 
     private final ProdutoController produtoController;
